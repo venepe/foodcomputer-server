@@ -1,0 +1,33 @@
+version: '3'
+services:
+
+  foodcomputer-api:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: npm run watch
+    depends_on:
+      - mongo
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./:/app
+    networks:
+      - private
+      - public
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./db-data:/data/db
+    networks:
+      - public
+
+networks:
+  public:
+  private:
+
+volumes:
+  db-data:

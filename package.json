@@ -1,0 +1,23 @@
+{
+  "name": "BabelPack",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "babel-node index.js --presets env",
+    "watch": "babel-watch index.js --presets env -L"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "http-errors": "^1.6.3",
+    "mongoose": "^5.0.0",
+    "multer": "^1.3.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.5.2",
+    "babel-watch": "^2.0.7"
+  }
+}
