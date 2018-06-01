@@ -5,6 +5,6 @@ WORKDIR /app
 
 COPY ./package*.json ./.babelrc ./
 RUN npm install
-ENV PORT=8002
-EXPOSE 8002
+ENV PORT=80
+EXPOSE 80
 CMD npm start
