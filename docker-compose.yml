@@ -5,11 +5,13 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
+    env_file:
+     - ./.env
     command: npm run watch
     depends_on:
       - mongo
     ports:
-      - "80:80"
+      - "8002:8002"
     volumes:
       - ./:/app
     networks:

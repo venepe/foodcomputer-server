@@ -112,4 +112,6 @@ app.use((err, req, res, next) => {
 });
 
 const httpServer = http.createServer(app);
-httpServer.listen(config.port);
+httpServer.listen(config.port, () => {
+  console.log(`listening on ${config.port}`);
+});
