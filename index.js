@@ -2,9 +2,12 @@ import express from 'express';
 import http from 'http';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import del from 'del';
 import path from 'path';
+import fs from 'fs';
 import mongoose from 'mongoose';
 import multer from 'multer';
+import AWS from 'aws-sdk';
 import Humidity from './models/humidity';
 import Snapshot from './models/snapshot';
 import Log from './models/log';
@@ -14,6 +17,8 @@ import { getQueryParams } from './utils';
 
 const app = express();
 const upload = multer({ dest: __dirname + '/public/images'});
+
+AWS.config.region = 'us-east-2';
 
 mongoose.connect(`${config.mongoUrl}`);
 mongoose.Promise = global.Promise;
@@ -29,15 +34,29 @@ app.post('/snapshots', upload.single('image'), (req, res) => {
     if (req.file) {
       const { originalname, filename, destination } = req.file;
       const { createdAt } = req.body;
-      const dirpath = destination.replace('/app/public', `${config.url}:${config.port}`);
-      const uri = `${dirpath}/${filename}`;
+      const filepath = `${destination}/${filename}`;
+      const body = fs.createReadStream(filepath);
+      const key = `uploads/snapshots/${filename}`;
+      const s3obj = new AWS.S3({ params: {
+        Bucket: config.bucket, Key: key, ACL: 'public-read'
+      } });
 
-      Snapshot.create({
-        uri,
-        createdAt,
-      }).then((doc) => res.json(doc));
+      s3obj.upload({ Body: body }).send((err, data) => {
+        del([filepath]);
+        if (err) {
+          console.log(`Failed to upload image to s3: ${err}`);
+          res.status(400).json({ errors : 'Error on upload' });
+        } else {
+          const uri = data.Location;
+          Snapshot.create({
+            uri,
+            createdAt,
+          }).then((doc) => res.json(doc));
+        }
+      });
     } else {
       console.log('err');
+      res.status(400).json({});
     }
 });
 

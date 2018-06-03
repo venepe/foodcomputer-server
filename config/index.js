@@ -1,5 +1,5 @@
 export default {
-  mongoUrl: 'mongodb://mongo/babelpack',
-  port: process.env.PORT || 8080,
-  url: process.env.URL || 'http://localhost',
+  mongoUrl: process.env.MONGO_URL || 'mongodb://mongo/babelpack',
+  port: process.env.PORT || 8002,
+  bucket: process.env.AWS_BUCKET_NAME || 'growfloria',
 };

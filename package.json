@@ -7,8 +7,10 @@
     "watch": "babel-watch index.js --presets env -L"
   },
   "dependencies": {
+    "aws-sdk": "^2.250.1",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
+    "del": "^3.0.0",
     "express": "^4.16.3",
     "http-errors": "^1.6.3",
     "mongoose": "^5.0.0",
