@@ -107,6 +107,21 @@ app.get('/snapshots', (req, res) => {
     });
 });
 
+app.get('/snapshots/:id', (req, res) => {
+  const id = req.params.id;
+  Snapshot.find({ _id: id }).limit(1).exec()
+    .then((docs) => {
+      if (docs.length > 0) {
+        res.json(docs[0]);
+      } else {
+        res.status(404).json({});
+      }
+    })
+    .catch((err) => {
+      res.status(404).json({});
+    });
+});
+
 app.use((err, req, res, next) => {
   res.status(404).json({});
 });
